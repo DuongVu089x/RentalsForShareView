@@ -6,5 +6,8 @@ export const appRoutes: Routes = [
     },
     {
         path: 'blog', loadChildren: './views/blog/blog.module#BlogModule'
+    },
+    {
+        path: 'admin', loadChildren: './views/admin/admin.module#AdminModule'
     }
 ]

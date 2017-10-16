@@ -1,6 +1,6 @@
-import { MdInputModule } from '@angular/material';
+import { ShareDialogImageComponent } from './../../share/share-dialog-image/share-dialog-image.component';
 import { ShareDialogComponent } from './../../share/share-dialog/share-dialog.component';
-import { MdButtonModule, MdIconModule, MdGridListModule, MdCardModule, MdDialogModule } from '@angular/material';
+import { MdButtonModule, MdIconModule, MdGridListModule, MdCardModule, MdDialogModule, MdInputModule } from '@angular/material';
 import { MenuModule } from './../../share/menu/menu.module';
 import { MenuComponent } from './../../share/menu/menu.component';
 import { ArticleDetailComponent } from './article-detail.component';
@@ -24,8 +24,14 @@ import { CommentComponent } from './comment/comment.component';
     MdInputModule,
     MenuModule
   ],
-  declarations: [ArticleDetailComponent, ListCommentComponent, RecommendationComponent, CommentComponent, ShareDialogComponent],
-  providers: [],
-  entryComponents : [ShareDialogComponent]
+  declarations: [
+    ArticleDetailComponent,
+    ListCommentComponent,
+    RecommendationComponent,
+    CommentComponent,
+    ShareDialogComponent,
+    ShareDialogImageComponent],
+  entryComponents: [ShareDialogComponent, ShareDialogImageComponent],
+  providers: []
 })
 export class ArticleDetailModule { }

@@ -1,0 +1,139 @@
+<button data-target="modal" class="btn modal-trigger" md-raised-button style="background:#009688; color:white">Create</button>
+
+<div class="example-container mat-elevation-z8">
+  <div class="example-header">
+    <md-form-field floatPlaceholder="never">
+      <input mdInput #filter placeholder="Filter users">
+    </md-form-field>
+  </div>
+  <md-table #table [dataSource]="dataSource">
+    <!-- ID Column -->
+    <ng-container mdColumnDef="userId">
+      <md-header-cell *mdHeaderCellDef> ID </md-header-cell>
+      <md-cell *mdCellDef="let row"> {{row.id}} </md-cell>
+    </ng-container>
+
+    <!-- Progress Column -->
+    <ng-container mdColumnDef="progress">
+      <md-header-cell *mdHeaderCellDef> Progress </md-header-cell>
+      <md-cell *mdCellDef="let row"> {{row.progress}}% </md-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container mdColumnDef="userName">
+      <md-header-cell *mdHeaderCellDef> Name </md-header-cell>
+      <md-cell *mdCellDef="let row"> {{row.name}} </md-cell>
+    </ng-container>
+
+    <!-- Color Column -->
+    <ng-container mdColumnDef="color">
+      <md-header-cell *mdHeaderCellDef> Color </md-header-cell>
+      <md-cell *mdCellDef="let row" [style.color]="row.color"> {{row.color}} </md-cell>
+    </ng-container>
+
+    <!-- Color Column -->
+    <ng-container mdColumnDef="actions">
+      <md-header-cell *mdHeaderCellDef> Action </md-header-cell>
+      <md-cell *mdCellDef="let row">
+        <button data-target="modal" class="btn modal-trigger" md-icon-button style="background:#009688; color:white">
+            <md-icon class="md-12">mode_edit</md-icon>
+        </button>
+        <button md-icon-button style="background:#F44336; color:white">
+            <md-icon class="md-12">delete</md-icon>
+        </button>
+      </md-cell>
+    </ng-container>
+    <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
+    <md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
+  </md-table>
+  <md-paginator #paginator [length]="exampleDatabase.data.length" [pageIndex]="0" [pageSize]="25" [pageSizeOptions]="[5, 10, 25, 100]">
+  </md-paginator>
+</div>
+
+<!-- Modal Structure -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <div style="color: #F4511E; text-align: center; text-transform: uppercase;">
+      <h4 *ngIf="id == -1">Create info</h4>
+      <h4 *ngIf="id != -1">Update</h4>
+    </div>
+    <form fxLayout="column" name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
+      <md-form-field class="full-width">
+        <input mdInput placeholder="Title" />
+        <md-error>
+          Please enter a valid email address
+        </md-error>
+        <md-error>
+          Email is <strong>required</strong>
+        </md-error>
+      </md-form-field>
+      <md-form-field class="full-width">
+        <textarea mdInput placeholder="Decription"></textarea>
+        <md-error>
+          Please enter a valid email address
+        </md-error>
+        <md-error>
+          Email is <strong>required</strong>
+        </md-error>
+      </md-form-field>
+      <table class="full-width" cellspacing="0">
+        <tr>
+          <td>
+            <md-form-field class="full-width">
+              <input mdInput placeholder="Street">
+            </md-form-field>
+          </td>
+          <td>
+            <md-form-field class="full-width">
+              <input mdInput placeholder="District">
+            </md-form-field>
+          </td>
+          <td>
+            <md-form-field class="full-width">
+              <input mdInput placeholder="City">
+            </md-form-field>
+          </td>
+        </tr>
+      </table>
+      <md-radio-group style="margin-bottom: 10px">
+        <md-radio-button value="1">Nam</md-radio-button>
+        <md-radio-button value="2">Nữ</md-radio-button>
+        <md-radio-button value="3">Cả 2</md-radio-button>
+      </md-radio-group>
+      <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)" [uploader]="uploader"
+        class="well my-drop-zone">
+        Base drop zone
+      </div>
+      <table class=" table " *ngIf="uploader.queue.length> 0">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Previews</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of uploader.queue; let i = index">
+            <td><strong>{{ item?.file?.name }}</strong></td>
+            <td>
+              <img style="width: 300px; height: 200px;" [src]="listFilePreviewPath[i]">
+            </td>
+            <td nowrap>
+              <button type="button" class="btn btn-danger btn-xs" (click)="removeFile(i)">                  
+                  <span class="glyphicon glyphicon-trash"></span> Remove
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div fxFlex="33" fxFlexAlign="end">
+        <button type="button" md-raised-button style="background:#f44336; color:white" (click)="closeModal()">
+          Close
+        </button>
+        <button type="submit" md-raised-button style="background:#009688; color:white" (click)="closeModal()">
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

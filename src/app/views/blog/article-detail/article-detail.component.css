@@ -75,3 +75,18 @@ md-form-field.mat-input-container.mat-form-field.ng-tns-c9-0 {
   width: 100%!important;
   margin-top: 10px;
 }
+
+.more-image img:hover {
+  transform: scale(1.2);
+}
+
+.more-image img {
+  margin: 4px;
+  max-height: 100px;
+  cursor: pointer;
+  transition: 0.2s
+}
+
+.image-info {
+  overflow: hidden;
+}

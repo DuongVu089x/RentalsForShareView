@@ -1,0 +1,14 @@
+<md-sidenav-container>
+  <md-sidenav #sidenav class="sidenav" style="width: 310px; padding: 10px">
+    <app-sidebar-menu></app-sidebar-menu>
+  </md-sidenav>
+
+  <div class="sidenav-content">
+    <app-top-menu (sidenavOpen)="changeNav($event)"></app-top-menu>
+    <div class="container" style="margin: 50px">
+      <router-outlet></router-outlet>
+    </div>
+    <app-footer></app-footer>
+  </div>
+
+</md-sidenav-container>

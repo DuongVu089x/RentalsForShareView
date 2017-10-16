@@ -1,4 +1,4 @@
-<div class="login-container" fxLayout="row" fxLayoutAlign="center center">
+<div *ngIf="!isLogin; else userDetail" class="login-container" fxLayout="row" fxLayoutAlign="center center" style="margin: 10px; height: 500px">
   <md-card>
     <nav md-tab-nav-bar>
       <a md-tab-link routerLink="login" routerLinkActive [routerLinkActiveOptions]="{ exact: true }" #rlaLogin="routerLinkActive"
@@ -8,8 +8,14 @@
       <a md-tab-link routerLink="register" routerLinkActive [routerLinkActiveOptions]="{ exact: true }" #rlaRegister="routerLinkActive"
         [active]="rlaRegister.isActive">
        Register
-   </a>
+      </a>
     </nav>
     <router-outlet></router-outlet>
   </md-card>
 </div>
+
+<ng-template #userDetail>
+  <div class="user-container" fxLayout="column" fxLayoutAlign="center" style="margin: 10px; height: 500px">
+    <app-user-detail></app-user-detail>
+  </div>
+</ng-template>

@@ -1,0 +1,77 @@
+<!-- Modal Structure -->
+<div>
+  <div>
+    <div style="color: #F4511E; text-align: center; text-transform: uppercase; max-height: 800px">
+      <h4 *ngIf="id == -1">Create info</h4>
+      <h4 *ngIf="id != -1">Update</h4>
+    </div>
+    <form fxLayout="column" name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
+      <md-form-field class="full-width">
+        <input mdInput placeholder="Title" />
+        <md-error>
+          Please enter a valid email address
+        </md-error>
+        <md-error>
+          Email is <strong>required</strong>
+        </md-error>
+      </md-form-field>
+      <md-form-field class="full-width">
+        <textarea mdInput placeholder="Decription"></textarea>
+        <md-error>
+          Please enter a valid email address
+        </md-error>
+        <md-error>
+          Email is <strong>required</strong>
+        </md-error>
+      </md-form-field>
+      <table class="full-width" cellspacing="0">
+        <tr>
+          <td>
+            <md-form-field class="full-width">
+              <input mdInput placeholder="Street">
+            </md-form-field>
+          </td>
+          <td>
+            <md-form-field class="full-width">
+              <input mdInput placeholder="District">
+            </md-form-field>
+          </td>
+          <td>
+            <md-form-field class="full-width">
+              <input mdInput placeholder="City">
+            </md-form-field>
+          </td>
+        </tr>
+      </table>
+      <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)" [uploader]="uploader"
+        class="well my-drop-zone">
+        Base drop zone
+      </div>
+
+      <table *ngIf="uploader.queue.length> 0">
+        <tbody style="display: block;  max-height: 200px; overflow-y: auto; overflow-x: hidden;">
+          <tr *ngFor="let item of uploader.queue; let i = index">
+            <td><strong>{{ item?.file?.name }}</strong></td>
+            <td>
+              <img style="width: 100px; height: 100px;" [src]="listFilePreviewPath[i]">
+            </td>
+            <td nowrap>
+              <button type="button" class="btn btn-danger btn-xs" (click)="removeFile(i)">                  
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div fxFlex="33" fxFlexAlign="end">
+        <button type="button" md-raised-button style="background:#f44336; color:white" (click)="closeModal()">
+          Close
+        </button>
+        <button type="submit" md-raised-button style="background:#009688; color:white" (click)="closeModal()">
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

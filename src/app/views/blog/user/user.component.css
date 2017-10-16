@@ -8,3 +8,8 @@ a.mat-tab-link {
 .mat-ink-bar {
   height: 4px!important;
 }
+
+app-user-detail {
+  height: 100%!important;
+}
+

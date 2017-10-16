@@ -1,3 +1,26 @@
 md-grid-tile.menu {
   background: lightblue;
 }
+
+.back-to-top:hover {
+  opacity: 1;
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #00BCD4;
+  z-index: 999;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 5px;
+  color: black;
+  opacity: 0.8;
+  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12);
+  display: none;
+}
+
+.back-to-top.to-top-fixed {
+  display: block;
+}

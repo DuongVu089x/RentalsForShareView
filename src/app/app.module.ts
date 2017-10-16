@@ -9,6 +9,7 @@ import { HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import 'rxjs/add/operator/map';
 import { FooterComponent } from './views/share/footer/footer.component';
+import { AdminComponent } from './views/admin/admin.component';
 
 @NgModule({
   declarations: [
