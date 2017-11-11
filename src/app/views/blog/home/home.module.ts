@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MotelService } from '../../../core/services/motel/motel.service';
 
 @NgModule({
     imports: [
@@ -28,6 +29,6 @@ import { CommonModule } from '@angular/common';
         MenuModule
     ],
     declarations: [HomeComponent, ListArticleComponent, ArticleComponent],
-    providers: []
+    providers: [MotelService]
 })
 export class HomeModule { }

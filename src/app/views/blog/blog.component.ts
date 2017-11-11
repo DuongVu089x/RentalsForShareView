@@ -12,22 +12,12 @@ export class BlogComponent implements OnInit {
   isTop = false;
   styleToTop = 'back-to-top';
 
-  constructor(private _dataService: DataService) { }
+  constructor() { }
 
   ngOnInit() {
     $.get('../../../assets/js/custom.js');
     $.get('../../../assets/css/custom.css');
   }
-
-  test() {
-    this._dataService.get('/').subscribe((response: string) => {
-      console.log(response);
-      this.result = response;
-    }, error => {
-      console.log('error');
-    });
-  }
-
 
 
   backToTop() {

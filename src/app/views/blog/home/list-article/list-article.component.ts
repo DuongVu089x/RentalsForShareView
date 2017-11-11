@@ -7,8 +7,8 @@ import { Component, OnInit, Output, Input } from '@angular/core';
 })
 export class ListArticleComponent implements OnInit {
 
-  @Input('artiles')
-  artiles: any;
+  @Input('motels')
+  motels: any;
 
   constructor() { }
 
