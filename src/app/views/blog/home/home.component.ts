@@ -10,12 +10,14 @@ import { Motel } from './../../../core/models/motel.models';
 })
 export class HomeComponent implements OnInit {
 
-  artiles = [
-    {
-      'urlTile': 'https://photo2.tinhte.vn/data/attachment-files/2017/08/4119945_cv-ipad.jpg',
-      'title': '[Review] iPad Pro 10.5 + Smart Keyboard đã làm mình muốn rời xa MacBook Pro'
-    }
-  ];
+  // artiles = [
+  //   {
+  //     'urlTile': 'https://photo2.tinhte.vn/data/attachment-files/2017/08/4119945_cv-ipad.jpg',
+  //     'title': '[Review] iPad Pro 10.5 + Smart Keyboard đã làm mình muốn rời xa MacBook Pro'
+  //   }
+  // ];
+
+  private page: number;
 
   public motels: Array<Motel>[];
 
@@ -24,22 +26,21 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadMotelsByPageAndKeyword(1, '');
+    this.page = 1;
+    this.loadMotelsByPageAndKeyword(this.page, '');
   }
 
   onScroll() {
-    this.artiles.push({
-      'urlTile': 'https://photo2.tinhte.vn/data/attachment-files/2017/08/4119945_cv-ipad.jpg',
-      'title': '[Review] iPad Pro 10.5 + Smart Keyboard đã làm mình muốn rời xa MacBook Pro'
-    });
+    this.loadMotelsByPageAndKeyword(this.page, '');
   }
 
   loadMotelsByPageAndKeyword(page: number, keyword: string): void {
     this._motelService.getListMotelsByPageAndKeyWord(page, keyword)
       .then((res: any) => {
-        this.motels = this.motels.concat(res.content);
-        console.log(res.content);
-        console.log(this.motels);
+        if (res.content !== undefined && res.content != null) {
+          this.page++;
+          this.motels = this.motels.concat(res.content);
+        }
       }, (err) => {
         console.log(err);
       });

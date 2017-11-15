@@ -10,7 +10,6 @@ export class DataService {
   private headers: Headers;
 
   constructor(private _http: Http, private _router: Router) {
-    console.log(JSON.parse(localStorage.getItem(SystemConstants.CURRENT_USER)).access_token);
     this.headers = new Headers();
     this.headers.append('Content-Type', 'application/json');
     this.headers.append('Authorization',
@@ -29,7 +28,7 @@ export class DataService {
     return this._http.put(SystemConstants.BASE_API + url, data, { headers: this.headers }).map(this.extracData);
   }
 
-  delete(url: string, key: string, id: string) {
+  delete(url: string, key: string, id: any) {
 
     return this._http.delete(`${SystemConstants.BASE_API + url}?${key}=${id}`, { headers: this.headers }).map(this.extracData);
 

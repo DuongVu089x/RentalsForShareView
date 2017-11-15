@@ -21,6 +21,6 @@ import { CommonModule } from '@angular/common';
 
   ],
   declarations: [BlogComponent, NavBarComponent, FooterComponent],
-  providers: [DataService]
+  providers: []
 })
 export class BlogModule { }
