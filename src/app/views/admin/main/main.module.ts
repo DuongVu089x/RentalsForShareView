@@ -1,3 +1,4 @@
+import { AuthenticationService } from './../../../core/services/authentication/authentication.service';
 import { FooterComponent } from './../../share/footer/footer.component';
 import { MdInputModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -25,6 +26,6 @@ import { TopMenuComponent } from '../shared/top-menu/top-menu.component';
     MdExpansionModule,
     MdListModule
   ],
-  declarations: [MainComponent, SidebarMenuComponent, TopMenuComponent, FooterComponent]
+  declarations: [MainComponent, SidebarMenuComponent, TopMenuComponent, FooterComponent],
 })
 export class MainModule { }

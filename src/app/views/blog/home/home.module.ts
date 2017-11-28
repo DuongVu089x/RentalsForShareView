@@ -1,3 +1,4 @@
+import { DataService } from './../../../core/services/data/data.service';
 import { MenuModule } from './../../share/menu/menu.module';
 import { MenuComponent } from './../../share/menu/menu.component';
 import { ArticleComponent } from './article/article.component';
@@ -29,6 +30,6 @@ import { MotelService } from '../../../core/services/motel/motel.service';
         MenuModule
     ],
     declarations: [HomeComponent, ListArticleComponent, ArticleComponent],
-    providers: [MotelService]
+    providers: [MotelService, DataService]
 })
 export class HomeModule { }

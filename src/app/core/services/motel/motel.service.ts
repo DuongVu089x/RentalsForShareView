@@ -1,11 +1,37 @@
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Motel } from './../../models/motel.models';
 import { DataService } from './../data/data.service';
 import { Injectable } from '@angular/core';
+import { UserModel } from '../../models/user.models';
 
 @Injectable()
 export class MotelService {
 
+  dataChange: BehaviorSubject<Motel[]> = new BehaviorSubject<Motel[]>([]);
+
   constructor(private _dataservice: DataService) { }
+
+  get data(): Motel[] {
+    return this.dataChange.value;
+  }
+
+  addUser(page: number) {
+    this.getListMotelsByPageAndKeyWord(page + 1, "")
+      .then((res: any) => {
+        this.dataChange.next(res.content);
+      });
+  }
+
+  getTotalPage(keyword: String) {
+    return new Promise((resolve, reject) => {
+      this._dataservice.post(`/api/motel/get-total-page?keyword=${keyword}`, null)
+        .subscribe((res) => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
 
   getListMotelsByPageAndKeyWord(page: number, keyword: string) {
     return new Promise((resolve, reject) => {
@@ -50,4 +76,5 @@ export class MotelService {
         });
     });
   }
+
 }

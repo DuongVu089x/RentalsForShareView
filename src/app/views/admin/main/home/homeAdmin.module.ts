@@ -14,10 +14,12 @@ import {
     MdRadioModule
 } from '@angular/material';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { HomeComponent } from './home.component';
 import { Routes, RouterModule } from '@angular/router';
 import { FileUploadModule, FileSelectDirective } from 'ng2-file-upload';
+import { MotelService } from '../../../../core/services/motel/motel.service';
+import { DataService } from '../../../../core/services/data/data.service';
 
 const homeRoutes: Routes = [
     { path: '', redirectTo: 'index', pathMatch: 'full' },
@@ -43,6 +45,6 @@ const homeRoutes: Routes = [
     ],
     declarations: [HomeComponent, ShareDialogUserComponent],
     entryComponents: [ShareDialogUserComponent],
-
+    providers: [DataService, MotelService]
 })
 export class HomeModule { }

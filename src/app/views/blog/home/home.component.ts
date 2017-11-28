@@ -10,13 +10,6 @@ import { Motel } from './../../../core/models/motel.models';
 })
 export class HomeComponent implements OnInit {
 
-  // artiles = [
-  //   {
-  //     'urlTile': 'https://photo2.tinhte.vn/data/attachment-files/2017/08/4119945_cv-ipad.jpg',
-  //     'title': '[Review] iPad Pro 10.5 + Smart Keyboard đã làm mình muốn rời xa MacBook Pro'
-  //   }
-  // ];
-
   private page: number;
 
   public motels: Array<Motel>[];
