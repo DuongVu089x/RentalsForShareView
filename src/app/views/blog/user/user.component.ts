@@ -1,3 +1,4 @@
+import { SystemConstants } from './../../../core/commons/system.constants';
 import { MdDialog } from '@angular/material';
 import { Component, OnInit } from '@angular/core';
 
@@ -8,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserComponent implements OnInit {
 
-  isLogin = true;
+  isLogin = false;
 
-  constructor(public dialog: MdDialog) { }
+  constructor(public dialog: MdDialog) {
+    if (localStorage.getItem(SystemConstants.CURRENT_USER) != null) {
+      this.isLogin = true;
+    }
+  }
 
   ngOnInit() {
     this.updateStyle();

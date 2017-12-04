@@ -1,25 +1,15 @@
-import { AuthenticationService } from './../../../../core/services/authentication/authentication.service';
+import { UserDetailComponent } from './user-detail.component';
 import { EqualValidator } from './../../../../core/directives/equal-validator.directive';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { RegisterComponent } from './register.component';
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import {
-    MdInputModule,
-    MdGridListModule,
-    MdIconModule,
-    MdToolbarModule,
-    MdButtonModule,
-    MdCheckboxModule,
-    MdTabsModule,
-    MdFormFieldModule
-} from "@angular/material";
+import { MdInputModule, MdGridListModule, MdIconModule, MdToolbarModule, MdButtonModule, MdCheckboxModule, MdTabsModule, MdFormFieldModule } from "@angular/material";
 
-export const registerRoutes: Routes = [
+export const userDetailRoutes: Routes = [
     {
-        path: '', component: RegisterComponent
+        path: '', component: UserDetailComponent
     }
 ];
 
@@ -37,12 +27,12 @@ export const registerRoutes: Routes = [
         MdFormFieldModule,
         MdTabsModule,
         FlexLayoutModule,
-        RouterModule.forChild(registerRoutes)
+        RouterModule.forChild(userDetailRoutes)
     ],
-    declarations: [RegisterComponent, EqualValidator],
-    providers: [AuthenticationService],
+    declarations: [UserDetailComponent],
+    providers: [],
     exports: [
-        RegisterComponent
+        UserDetailComponent
     ]
 })
-export class RegisterModule { }
+export class UserDetailModule { }

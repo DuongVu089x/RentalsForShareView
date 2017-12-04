@@ -1,96 +1,104 @@
-<button data-target="modal" class="btn modal-trigger" md-raised-button style="background:#009688; color:white">Create</button>
+<button data-target="modal" class="btn modal-trigger" md-raised-button style="background:#009688; color:white" (click)="showInsert()">Create</button>
 
 <div class="example-container mat-elevation-z8">
-  <div class="example-header">
-    <md-form-field floatPlaceholder="never">
-      <input mdInput #filter placeholder="Filter users">
-    </md-form-field>
+  <div class="example-header" fxLayout="row" fxLayoutAlign="end center" style="margin: 5px 20px;">
+    <input type="text" fxFlex="30" name="password" #filter placeholder="Filter users" style="border: 1px solid #26a69a; border-radius: 5px; padding: 5px; height: 40px;"
+    />
+    <button md-raised-button style="background: #26a69a; color: white; margin-left: 1px" fxFlex="5">
+      <md-icon class="md-24" aria-label="Example icon-button with a heart icon">search</md-icon>
+    </button>
   </div>
+  <div class="alert alert-success" *ngIf="message" style="margin: 0 200px;">
+    <p class="text-center">{{message}}</p>
+  </div>
+
   <md-table #table [dataSource]="dataSource">
     <!-- ID Column -->
-    <ng-container mdColumnDef="userId">
+    <ng-container mdColumnDef="id">
       <md-header-cell *mdHeaderCellDef> ID </md-header-cell>
       <md-cell *mdCellDef="let row"> {{row.id}} </md-cell>
     </ng-container>
 
     <!-- Progress Column -->
-    <ng-container mdColumnDef="progress">
-      <md-header-cell *mdHeaderCellDef> Progress </md-header-cell>
-      <md-cell *mdCellDef="let row"> {{row.progress}}% </md-cell>
+    <ng-container mdColumnDef="address">
+      <md-header-cell *mdHeaderCellDef> Address </md-header-cell>
+      <md-cell *mdCellDef="let row"> {{row.address}} </md-cell>
     </ng-container>
 
     <!-- Name Column -->
-    <ng-container mdColumnDef="userName">
-      <md-header-cell *mdHeaderCellDef> Name </md-header-cell>
-      <md-cell *mdCellDef="let row"> {{row.name}} </md-cell>
+    <ng-container mdColumnDef="title">
+      <md-header-cell *mdHeaderCellDef> Title </md-header-cell>
+      <md-cell *mdCellDef="let row"> {{row.title}} </md-cell>
     </ng-container>
 
     <!-- Color Column -->
-    <ng-container mdColumnDef="color">
-      <md-header-cell *mdHeaderCellDef> Color </md-header-cell>
-      <md-cell *mdCellDef="let row" [style.color]="row.color"> {{row.color}} </md-cell>
+    <ng-container mdColumnDef="price">
+      <md-header-cell *mdHeaderCellDef> Price </md-header-cell>
+      <md-cell *mdCellDef="let row"> {{row.price | currency:'USD':true:'1.2-2'}} </md-cell>
     </ng-container>
 
     <!-- Color Column -->
     <ng-container mdColumnDef="actions">
       <md-header-cell *mdHeaderCellDef> Action </md-header-cell>
       <md-cell *mdCellDef="let row">
-        <button data-target="modal" class="btn modal-trigger" md-icon-button style="background:#009688; color:white">
-            <md-icon class="md-12">mode_edit</md-icon>
+        <button data-target="modal" class="btn modal-trigger" (click)="getMotel(row)" md-icon-button style="background:#009688; color:white">
+          <md-icon class="md-12">mode_edit</md-icon>
         </button>
-        <button md-icon-button style="background:#F44336; color:white">
-            <md-icon class="md-12">delete</md-icon>
+        <button md-icon-button style="background:#F44336; color:white" (click)="deleteMotel(row.id)" #btnDelete>
+          <md-icon class="md-12">delete</md-icon>
         </button>
       </md-cell>
     </ng-container>
     <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
     <md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
   </md-table>
-  <md-paginator #paginator [length]="exampleDatabase.data.length" [pageIndex]="0" [pageSize]="25" [pageSizeOptions]="[5, 10, 25, 100]">
+  <md-paginator #paginator [pageIndex]="0" [pageSize]="25" [pageSizeOptions]="[5, 10, 25, 100]">
   </md-paginator>
 </div>
 
 <!-- Modal Structure -->
 <div id="modal" class="modal">
-  <div class="modal-content">
+  <div class="modal-content" *ngIf="motel">
     <div style="color: #F4511E; text-align: center; text-transform: uppercase;">
       <h4 *ngIf="id == -1">Create info</h4>
       <h4 *ngIf="id != -1">Update</h4>
     </div>
-    <form fxLayout="column" name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
+    <form fxLayout="column" name="form" (ngSubmit)="changeOrInsertMotel(f)" #f="ngForm" novalidate>
       <md-form-field class="full-width">
-        <input mdInput placeholder="Title" />
+        <input mdInput placeholder="Title" [(ngModel)]="motel.title" name="Title" />
         <md-error>
           Please enter a valid email address
         </md-error>
         <md-error>
-          Email is <strong>required</strong>
+          Email is
+          <strong>required</strong>
         </md-error>
       </md-form-field>
       <md-form-field class="full-width">
-        <textarea mdInput placeholder="Decription"></textarea>
+        <textarea mdInput placeholder="Decription" [(ngModel)]="motel.decription" name="Decription"></textarea>
         <md-error>
           Please enter a valid email address
         </md-error>
         <md-error>
-          Email is <strong>required</strong>
+          Email is
+          <strong>required</strong>
         </md-error>
       </md-form-field>
       <table class="full-width" cellspacing="0">
         <tr>
           <td>
             <md-form-field class="full-width">
-              <input mdInput placeholder="Street">
+              <input mdInput placeholder="Street" [(ngModel)]="motel.street" name="Street">
             </md-form-field>
           </td>
           <td>
             <md-form-field class="full-width">
-              <input mdInput placeholder="District">
+              <input mdInput placeholder="District" [(ngModel)]="motel.district" name="District">
             </md-form-field>
           </td>
           <td>
             <md-form-field class="full-width">
-              <input mdInput placeholder="City">
+              <input mdInput placeholder="City" [(ngModel)]="motel.city" name="City">
             </md-form-field>
           </td>
         </tr>
@@ -114,13 +122,15 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of uploader.queue; let i = index">
-            <td><strong>{{ item?.file?.name }}</strong></td>
+            <td>
+              <strong>{{ item?.file?.name }}</strong>
+            </td>
             <td>
               <img style="width: 300px; height: 200px;" [src]="listFilePreviewPath[i]">
             </td>
             <td nowrap>
-              <button type="button" class="btn btn-danger btn-xs" (click)="removeFile(i)">                  
-                  <span class="glyphicon glyphicon-trash"></span> Remove
+              <button type="button" class="btn btn-danger btn-xs" (click)="removeFile(i)">
+                <span class="glyphicon glyphicon-trash"></span> Remove
               </button>
             </td>
           </tr>
@@ -130,7 +140,7 @@
         <button type="button" md-raised-button style="background:#f44336; color:white" (click)="closeModal()">
           Close
         </button>
-        <button type="submit" md-raised-button style="background:#009688; color:white" (click)="closeModal()">
+        <button type="submit" md-raised-button style="background:#009688; color:white">
           Submit
         </button>
       </div>

@@ -1,4 +1,4 @@
-import { MotelDataSource } from './../../../../core/datasource/motel.datasource';
+import { MotelDataSource } from './../../../../core/datasource/admin/motel.datasource';
 import { MotelService } from './../../../../core/services/motel/motel.service';
 import { ShareDialogUserComponent } from './../../shared/share-dialog-user/share-dialog-user.component';
 import { MdDialog, MdPaginator } from '@angular/material';
@@ -54,9 +54,12 @@ export class HomeComponent implements OnInit {
       })
   }
 
-  openDialog(): void {
+  openDialog(motelId: number): void {
     const dialogRef = this.dialog.open(ShareDialogUserComponent, {
-      height: '100 %'
+      height: '100 %',
+      data: {
+        id: motelId
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -66,8 +69,6 @@ export class HomeComponent implements OnInit {
 
   onPaginateChange(event) {
     const startIndex = event.pageIndex * event.pageSize;
-    console.log(startIndex);
-
     this.dataSource = new MotelDataSource(this.motelService, this.paginator);
 
   }

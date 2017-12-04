@@ -1,3 +1,4 @@
+import { SystemConstants } from './../../../core/commons/system.constants';
 import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
 
 @Component({
@@ -8,12 +9,17 @@ import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
 export class NavBarComponent implements OnInit {
   flag: boolean;
   styleHeader: string;
+  isLogin: boolean;
   constructor(private el: ElementRef) {
     this.flag = false;
     this.styleHeader = 'nav-header';
+    this.isLogin = false;
   }
 
   ngOnInit() {
+    if (localStorage.getItem(SystemConstants.CURRENT_USER) != null) {
+      this.isLogin = true;
+    }
   }
 
   @HostListener('window:scroll', [])

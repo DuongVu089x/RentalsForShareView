@@ -1,3 +1,9 @@
+import { ClassMotel } from './../../../../core/models/motel.class.models';
+import { UrlConstants } from './../../../../core/commons/url.constants';
+import { Motel } from './../../../../core/models/motel.models';
+import { SystemConstants } from './../../../../core/commons/system.constants';
+import { MotelService } from './../../../../core/services/motel/motel.service';
+import { UserMotelDataSource } from './../../../../core/datasource/user/motel.datasource';
 import { Component, ViewChild, OnInit, ElementRef, Input } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { MdPaginator, MdDialog } from '@angular/material';
@@ -8,8 +14,10 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
+import { Button } from 'selenium-webdriver';
+import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
-const URL = 'https://evening-anchorage-3159.herokuapp.com/api/';
+const URL = `${SystemConstants.BASE_API}${UrlConstants.UPLOADAPI}`
 
 
 @Component({
@@ -17,13 +25,14 @@ const URL = 'https://evening-anchorage-3159.herokuapp.com/api/';
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.css']
 })
-export class UserDetailComponent implements OnInit {
-  displayedColumns = ['userId', 'userName', 'progress', 'color', 'actions'];
-  exampleDatabase = new ExampleDatabase();
-  dataSource: ExampleDataSource | null;
+export class UserDetailComponent implements OnInit, AfterViewInit {
+
+  displayedColumns = ['id', 'address', 'title', 'price', 'actions'];
+  dataSource: UserMotelDataSource | null;
   uploader: FileUploader = new FileUploader({ url: URL });
   hasBaseDropZoneOver = false;
-
+  motel: Motel;
+  message: string;
   foods = [
     { value: 'steak-0', viewValue: 'Steak' },
     { value: 'pizza-1', viewValue: 'Pizza' },
@@ -32,30 +41,51 @@ export class UserDetailComponent implements OnInit {
 
   @ViewChild(MdPaginator) paginator: MdPaginator;
   @ViewChild('filter') filter: ElementRef;
+  @ViewChild('btnDelete') btnDetele: ElementRef;
 
   url;
   id = -1;
   listFilePreviewPath: SafeUrl[];
   filePreviewPath: SafeUrl;
 
-  constructor(public dialog: MdDialog, private sanitizer: DomSanitizer) {
+  constructor(public dialog: MdDialog, private sanitizer: DomSanitizer, private motelService: MotelService) {
     this.listFilePreviewPath = [];
 
     this.uploader.onAfterAddingFile = (fileItem) => {
       this.filePreviewPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(fileItem._file)));
       this.listFilePreviewPath.push(this.filePreviewPath);
     };
+
   }
 
   ngOnInit() {
     $(document).ready(function () {
       $('.modal').modal();
     });
-    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.paginator);
+    this.dataSource = new UserMotelDataSource(this.motelService, this.paginator, JSON.parse(localStorage.getItem(SystemConstants.CURRENT_USER)).access_token);
   }
+  ngAfterViewInit(): void {
 
+  }
   public fileOverBase(e: any): void {
     this.hasBaseDropZoneOver = e;
+  }
+
+  public getMotel(motel: Motel): void {
+    this.motel = motel;
+  }
+
+  public deleteMotel(id: number): void {
+    this.motelService.delete(id)
+      .then((res: any) => {
+        this.message = res.result;
+        this.dataSource = new UserMotelDataSource(this.motelService, this.paginator, JSON.parse(localStorage.getItem(SystemConstants.CURRENT_USER)).access_token);
+      }, (err: any) => {
+        this.message = err.result;
+      })
+      .catch(err => {
+
+      })
   }
 
   removeFile(index: number): void {
@@ -63,86 +93,48 @@ export class UserDetailComponent implements OnInit {
     this.listFilePreviewPath.splice(index, 1);
   }
 
+  public changeOrInsertMotel(): void {
+    if (this.motel.id != null) {
+      this.changeMotel();
+    } else {
+      this.insertMotel();
+    }
+  }
+
+  public insertMotel(): void {
+    console.log(this.motel);
+    this.motelService.insert(this.motel)
+      .then((res: any) => {
+        this.message = res.result;
+        this.dataSource = new UserMotelDataSource(this.motelService, this.paginator, JSON.parse(localStorage.getItem(SystemConstants.CURRENT_USER)).access_token);
+        setTimeout(() => { $('#modal').modal('close') }, 1000);
+      }, (err) => {
+        console.log(err);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
+  public showInsert(): void {
+    this.motel = new ClassMotel();
+  }
+
+  public changeMotel(): void {
+    this.motelService.update(this.motel)
+      .then((res: any) => {
+        this.message = `${res.result} ${this.motel.id}`;
+        setTimeout(() => { $('#modal').modal('close') }, 1000);
+      }, (err) => {
+        console.log(err);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+
   closeModal() {
     $('#modal').modal('close');
   }
 
-}
-
-/** Constants used to fill up our data base. */
-const COLORS = ['maroon', 'red', 'orange', 'yellow', 'olive', 'green', 'purple',
-  'fuchsia', 'lime', 'teal', 'aqua', 'blue', 'navy', 'black', 'gray'];
-const NAMES = ['Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack',
-  'Charlotte', 'Theodore', 'Isla', 'Oliver', 'Isabella', 'Jasper',
-  'Cora', 'Levi', 'Violet', 'Arthur', 'Mia', 'Thomas', 'Elizabeth'];
-
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  color: string;
-}
-
-/** An example database that the data source uses to retrieve data for the table. */
-export class ExampleDatabase {
-  /** Stream that emits whenever the data has been modified. */
-  dataChange: BehaviorSubject<UserData[]> = new BehaviorSubject<UserData[]>([]);
-  get data(): UserData[] { return this.dataChange.value; }
-
-  constructor() {
-    // Fill up the database with 100 users.
-    for (let i = 0; i < 100; i++) { this.addUser(); }
-  }
-
-  /** Adds a new user to the database. */
-  addUser() {
-    const copiedData = this.data.slice();
-    copiedData.push(this.createNewUser());
-    this.dataChange.next(copiedData);
-  }
-
-  /** Builds and returns a new User. */
-  private createNewUser() {
-    const name =
-      NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-      NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-
-    return {
-      id: (this.data.length + 1).toString(),
-      name: name,
-      progress: Math.round(Math.random() * 100).toString(),
-      color: COLORS[Math.round(Math.random() * (COLORS.length - 1))]
-    };
-  }
-}
-
-/**
- * Data source to provide what data should be rendered in the table. Note that the data source
- * can retrieve its data in any way. In this case, the data source is provided a reference
- * to a common data base, ExampleDatabase. It is not the data source's responsibility to manage
- * the underlying data. Instead, it only needs to take the data and send the table exactly what
- * should be rendered.
- */
-export class ExampleDataSource extends DataSource<any> {
-  constructor(private _exampleDatabase: ExampleDatabase, private _paginator: MdPaginator) {
-    super();
-  }
-
-  /** Connect function called by the table to retrieve one stream containing the data to render. */
-  connect(): Observable<UserData[]> {
-    const displayDataChanges = [
-      this._exampleDatabase.dataChange,
-      this._paginator.page,
-    ];
-
-    return Observable.merge(...displayDataChanges).map(() => {
-      const data = this._exampleDatabase.data.slice();
-
-      // Grab the page's slice of data.
-      const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
-      return data.splice(startIndex, this._paginator.pageSize);
-    });
-  }
-
-  disconnect() { }
 }

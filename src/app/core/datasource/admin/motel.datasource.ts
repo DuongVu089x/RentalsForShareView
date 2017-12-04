@@ -1,8 +1,8 @@
-import { MotelService } from './../services/motel/motel.service';
+import { MotelService } from './../../services/motel/motel.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { DataSource } from '@angular/cdk/collections';
-import { Motel } from '../models/motel.models';
+import { Motel } from '../../models/motel.models';
 import { MdPaginator } from '@angular/material';
 
 export class MotelDataSource extends DataSource<Motel>{
